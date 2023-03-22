@@ -8,8 +8,9 @@ import { parseCitibankCreditStatement } from "./parsers/citibank.credit";
 
 import { extractTextChunksFromPDF } from "./utils/extractTextChunksFromPDF";
 import { parseKasikornBankStatement } from "./parsers/kasikorn.statement";
+import { parseSCBStatement } from "./parsers/scb.statement";
 
-const bankType = ["kasikorn", "ktc", "citibank"] as const;
+const bankType = ["kasikorn", "ktc", "citibank", "scb"] as const; 
 
 export type Bank = (typeof bankType)[number];
 
@@ -47,6 +48,7 @@ export async function parseStatement(
 
   if (type === "account") {
     if (bank === "kasikorn") return parseKasikornBankStatement(rawChunks);
+    if (bank === "scb") return parseSCBStatement(rawChunks); 
   }
 
   throw new Error("statement type or bank is not supported");
